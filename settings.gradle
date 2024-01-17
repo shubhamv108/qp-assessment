@@ -1,4 +1,4 @@
-rootProject.name = 'template-service-java-springboot'
+rootProject.name = 'grocery-booking'
 
 
 //include "shared", "api", "services:webservice"

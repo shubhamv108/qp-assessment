@@ -12,8 +12,8 @@
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
         <!-- Rolling File Appender -->
-        <RollingFile name="FileAppender" fileName="/tmp/logs/template-service-java-springboot.log"
-                     filePattern="/tmp/logs/template-service-java-springboot-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="FileAppender" fileName="/tmp/logs/grocery-booking.log"
+                     filePattern="/tmp/logs/grocery-booking-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout>
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>
@@ -27,12 +27,12 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <AsyncLogger name="app.template-service-java-springboot" level="debug" additivity="false">
+        <AsyncLogger name="app.grocery-booking" level="debug" additivity="false">
             <AppenderRef ref="ConsoleAppender" />
             <AppenderRef ref="FileAppender" />
         </AsyncLogger>
 
-        <AsyncLogger name="app.template-service-java-springboot" level="error" additivity="false">
+        <AsyncLogger name="app.grocery-booking" level="error" additivity="false">
             <AppenderRef ref="ConsoleAppender" />
             <AppenderRef ref="FileAppender" />
         </AsyncLogger>

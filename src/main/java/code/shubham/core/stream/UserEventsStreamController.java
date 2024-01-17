@@ -27,7 +27,7 @@ public class UserEventsStreamController {
 	// LocalTime.now().toString());
 	// }
 	//
-	// @GetMapping("/stream-template-service-java-springboot")
+	// @GetMapping("/stream-grocery-booking")
 	// public Flux<ServerSentEvent<?>> streamEvents(@RequestParam("userId") String userId,
 	// @RequestParam("timestamp") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
 	// Date timestamp) {

@@ -1,11 +1,11 @@
-# template-service-java-springboot
+# grocery-booking
 Simple application to demonstrate server sent events using Spring Boot.
 
 
 # Replace
-### template-service-java-springboot
-### templateservicejavaspringboot
-### TemplateServiceJavaSpringBoot
+### grocery-booking
+### grocerybooking
+### GroceryBooking
 
 # Github Secrets
 DOCKER_USER

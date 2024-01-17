@@ -48,7 +48,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_USER}}/template-service-java-springboot:latest
+        run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_USER}}/grocery-booking:latest
 #      - name: Prisma Cloud image scan
 #        id: scan
 #        uses: PaloAltoNetworks/prisma-cloud-scan@v1.5
@@ -56,7 +56,7 @@ jobs:
 #          pcc_console_url: ${{ secrets.PCC_CONSOLE_URL }}
 #          pcc_user: ${{ secrets.PCC_USER }}
 #          pcc_pass: ${{ secrets.PCC_PASS }}
-#          image_name: template-service-java-springboot-fluentbit:latest
+#          image_name: grocery-booking-fluentbit:latest
 #      - name: Prisma Cloud image scan - Fluentbit
 #        id: scan
 #        uses: PaloAltoNetworks/prisma-cloud-scan@v1.5
@@ -64,6 +64,6 @@ jobs:
 #          pcc_console_url: ${{ secrets.PCC_CONSOLE_URL }}
 #          pcc_user: ${{ secrets.PCC_USER }}
 #          pcc_pass: ${{ secrets.PCC_PASS }}
-#          image_name: template-service-java-springboot:latest
+#          image_name: grocery-booking:latest
       - name: Docker Push To DockerHub
-        run: docker push ${{secrets.DOCKER_USER}}/template-service-java-springboot
+        run: docker push ${{secrets.DOCKER_USER}}/grocery-booking

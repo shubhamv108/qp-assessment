@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "c1204209-805e-45ac-a3e7-e95abb73ca3e",
-		"name": "TemplateServiceJavaSpringBoot",
+		"name": "GroceryBooking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "5074949"
 	},
@@ -63,14 +63,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/template-service-java-springboot/user/2/events",
+					"raw": "http://localhost:8080/grocery-booking/user/2/events",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"template-service-java-springboot",
+						"grocery-booking",
 						"user",
 						"2",
 						"events"
@@ -107,14 +107,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/template-service-java-springboot/user/2/events",
+					"raw": "http://localhost:8080/grocery-booking/user/2/events",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"template-service-java-springboot",
+						"grocery-booking",
 						"user",
 						"2",
 						"events"
@@ -124,20 +124,20 @@
 			"response": []
 		},
 		{
-			"name": "StreamTemplateServiceJavaSpringBoot",
+			"name": "StreamGroceryBooking",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/template-service-java-springboot/stream-template-service-java-springboot?userId=2&timestamp=2023-08-27T05:49:40.000+00:00",
+					"raw": "http://localhost:8080/grocery-booking/stream-grocery-booking?userId=2&timestamp=2023-08-27T05:49:40.000+00:00",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"template-service-java-springboot",
-						"stream-template-service-java-springboot"
+						"grocery-booking",
+						"stream-grocery-booking"
 					],
 					"query": [
 						{

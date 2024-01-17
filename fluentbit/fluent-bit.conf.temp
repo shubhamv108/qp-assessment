@@ -6,7 +6,7 @@
 [INPUT]
 	name          	tail
 	tag           	*
-	path          	/tmp/logs/template-service-java-springboot.log
+	path          	/tmp/logs/grocery-booking.log
 	multiline.parser java
 	skip_empty_lines  On
 	refresh_interval  5
@@ -20,4 +20,4 @@
 	Name        kafka
 	Match       *
 	Brokers     localhost:29092
-	Topics      logs-template-service-java-springboot
+	Topics      logs-grocery-booking

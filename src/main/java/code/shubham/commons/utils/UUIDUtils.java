@@ -4,8 +4,8 @@ import java.util.UUID;
 
 public class UUIDUtils {
 
-	public static String uuid4(final String key) {
-		return UUID.nameUUIDFromBytes(key.getBytes()).toString();
+	public static String uuid5(final String key) {
+		return UUIDGenerator.generateType5UUID(key).toString();
 	}
 
 	public static String generate() {

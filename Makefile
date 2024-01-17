@@ -58,12 +58,12 @@ define k8s-delete-app
 endef
 
 define del-local-app
-    @docker stop template-service-java-springboot-worker
-    @docker stop template-service-java-springboot-web
-    @docker rm template-service-java-springboot-worker
-    @docker rm template-service-java-springboot-web
-    @docker image rm template-service-java-springboot
-    @docker image rm shubham01/template-service-java-springboot
+    @docker stop grocery-booking-worker
+    @docker stop grocery-booking-web
+    @docker rm grocery-booking-worker
+    @docker rm grocery-booking-web
+    @docker image rm grocery-booking
+    @docker image rm shubham01/grocery-booking
 endef
 
 
@@ -128,11 +128,11 @@ build-local-test: clean
 	./gradlew build
 
 rm-images: clean
-	docker image rm shubham01/template-service-java-springboot
-	docker image rm template-service-java-springboot
+	docker image rm shubham01/grocery-booking
+	docker image rm grocery-booking
 
 docker-build:
-	docker build -t shubham01/template-service-java-springboot:latest .
+	docker build -t shubham01/grocery-booking:latest .
 
 build: clean build-local docker-build
 
@@ -142,7 +142,7 @@ run-local: build-local
 	./gradlew bootRun
 
 run: build
-	docker run -p 8080:8080 shubham01/template-service-java-springboot:latest --network="host"
+	docker run -p 8080:8080 shubham01/grocery-booking:latest --network="host"
 
 k8s-apply:
 	$(call k8s-apply)
@@ -169,4 +169,4 @@ pipeline-build: local-setup
 	./gradlew build
 
 # condb:
-#     mysql -h 127.0.0.1 -P 3306 -u test template-service-java-springboot -p
+#     mysql -h 127.0.0.1 -P 3306 -u test grocery-booking -p

@@ -1,6 +1,6 @@
 package code.shubham.test;
 
-import code.shubham.TemplateServiceJavaSpringBootApplication;
+import code.shubham.GroceryBookingApplication;
 import code.shubham.commons.contexts.RoleContextHolder;
 import code.shubham.commons.contexts.UserIDContextHolder;
 import code.shubham.commons.kafka.KafkaPublisher;
@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Set;
 
-@SpringBootTest(classes = TemplateServiceJavaSpringBootApplication.class)
+@SpringBootTest(classes = GroceryBookingApplication.class)
 public abstract class AbstractSpringBootTest extends AbstractTest {
 
 	protected TestKafkaConsumer kafkaConsumer;

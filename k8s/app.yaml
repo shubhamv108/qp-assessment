@@ -1,36 +1,36 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: template-service-java-springboot
+  name: grocery-booking
   labels:
-    name: template-service-java-springboot
+    name: grocery-booking
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: template-service-java-springboot
-  namespace: template-service-java-springboot
+  name: grocery-booking
+  namespace: grocery-booking
   labels:
-    app: template-service-java-springboot
+    app: grocery-booking
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: template-service-java-springboot
+      app: grocery-booking
 #  updateStrategy:
 #    type: RollingUpdate
   template:
     metadata:
       labels:
-        app: template-service-java-springboot
+        app: grocery-booking
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
         prometheus.io/path: "/actuator/prometheus"
     spec:
       containers:
-        - name: template-service-java-springboot
-          image: shubham01/template-service-java-springboot:latest
+        - name: grocery-booking
+          image: shubham01/grocery-booking:latest
           imagePullPolicy: Always
           resources:
             limits:
@@ -58,7 +58,7 @@ spec:
             failureThreshold: 3
           env:
             - name: spring.datasource.url
-              value: jdbc:mysql://mysql.template-service-java-springboot-mysql.svc:3306/template-service-java-springboot?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&autoReconnect=true&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+              value: jdbc:mysql://mysql.grocery-booking-mysql.svc:3306/grocery-booking?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&autoReconnect=true&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
             - name: spring.datasource.username
               value: root
             - name: spring.datasource.password
@@ -69,11 +69,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: template-service-java-springboot
-  namespace: template-service-java-springboot
+  name: grocery-booking
+  namespace: grocery-booking
 spec:
   selector:
-    app: template-service-java-springboot
+    app: grocery-booking
   type: ClusterIP
   ports:
     - port: 80
@@ -82,17 +82,17 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: template-service-java-springboot
-  namespace: template-service-java-springboot
+  name: grocery-booking
+  namespace: grocery-booking
 spec:
   rules:
     - http:
         paths:
-          - path: /template-service-java-springboot/*
+          - path: /grocery-booking/*
             pathType: Prefix
             backend:
               service:
-                name: template-service-java-springboot
+                name: grocery-booking
                 port:
                   number: 80
 
@@ -100,14 +100,14 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: template-service-java-springboot-monitor
-  namespace: template-service-java-springboot
+  name: grocery-booking-monitor
+  namespace: grocery-booking
   labels:
     release: prometheus-operator
 spec:
   selector:
     matchLabels:
-      app: template-service-java-springboot
+      app: grocery-booking
   endpoints:
     - port: http-traffic
       path: "/actuator/prometheus"

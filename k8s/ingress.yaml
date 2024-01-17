@@ -2,16 +2,16 @@
 #apiVersion: route.openshift.io/v1
 #kind: Route
 #metadata:
-#  name: template-service-java-springboot
-#  namespace: template-service-java-springboot
+#  name: grocery-booking
+#  namespace: grocery-booking
 #spec:
 #  #  host must conform to DNS 952 subdomain conventions
-#  host: "template-service-java-springboot-template-service-java-springboot-.dev-shubhamvarshney.io"
+#  host: "grocery-booking-grocery-booking-.dev-shubhamvarshney.io"
 #  port:
 #    targetPort: 8080
 #  to:
 #    kind: Service
-#    name: template-service-java-springboot
+#    name: grocery-booking
 #    weight: 100
 #  tls:
 #    termination: edge

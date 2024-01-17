@@ -14,13 +14,13 @@ pipeline {
     stage('Docker Build') {
         agent any
       steps {
-        sh 'docker build -t ${env.DOCKER_USER}/template-service-java-springboot:latest .'
+        sh 'docker build -t ${env.DOCKER_USER}/grocery-booking:latest .'
       }
     }
     stage('Docker Build') {
     	agent any
       steps {
-      	sh 'docker build -t ${env.DOCKER_USER}/template-service-java-springboot-fluentbit:latest .'
+      	sh 'docker build -t ${env.DOCKER_USER}/grocery-booking-fluentbit:latest .'
       }
     }
     stage('Image Scan') {
@@ -28,7 +28,7 @@ pipeline {
             prismaCloudScanImage ca: '',
             cert: '',
             dockerAddress: 'unix:///var/run/docker.sock',
-            image: 'shubham01/template-service-java-springboot:latest',
+            image: 'shubham01/grocery-booking:latest',
             key: '',
             logLevel: 'info',
             podmanPath: '',
@@ -43,7 +43,7 @@ pipeline {
             prismaCloudScanImage ca: '',
             cert: '',
             dockerAddress: 'unix:///var/run/docker.sock',
-            image: 'shubham01/template-service-java-springboot-fluentbit:latest',
+            image: 'shubham01/grocery-booking-fluentbit:latest',
             key: '',
             logLevel: 'info',
             podmanPath: '',
@@ -63,7 +63,7 @@ pipeline {
       steps {
       	withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USER')]) {
         	sh "docker login -u ${env.DOCKER_USER} -p ${env.DOCKER_PASSWORD}"
-          sh 'docker push ${env.DOCKER_USER}/template-service-java-springboot:latest'
+          sh 'docker push ${env.DOCKER_USER}/grocery-booking:latest'
         }
       }
     }
@@ -72,7 +72,7 @@ pipeline {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USER')]) {
             sh "docker login -u ${env.DOCKER_USER} -p ${env.DOCKER_PASSWORD}"
-          sh 'docker push ${env.DOCKER_USER}/template-service-java-springboot-fluentbit:latest'
+          sh 'docker push ${env.DOCKER_USER}/grocery-booking-fluentbit:latest'
         }
       }
     }
