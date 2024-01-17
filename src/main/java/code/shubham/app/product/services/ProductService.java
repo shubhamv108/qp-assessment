@@ -26,6 +26,7 @@ public class ProductService {
 			.expirationDuration(duration)
 			.build());
 
+		return product;
 	}
 
 }
