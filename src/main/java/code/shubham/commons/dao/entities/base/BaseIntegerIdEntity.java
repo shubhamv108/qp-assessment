@@ -1,10 +1,7 @@
 package code.shubham.commons.dao.entities.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,16 +16,15 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public abstract class BaseIdEntity implements Serializable {
+public abstract class BaseIntegerIdEntity implements Serializable {
 
 	private static final long serialVersionUID = 8953224502234883513L;
 
 	@JsonIgnore
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	@Column(name = "id", columnDefinition = "VARCHAR(36)", length = 36)
-	private String id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(nullable = false)
+	private Integer id;
 
 	@Override
 	public boolean equals(Object o) {
@@ -36,7 +32,7 @@ public abstract class BaseIdEntity implements Serializable {
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		final BaseIdEntity that = (BaseIdEntity) o;
+		final BaseIntegerIdEntity that = (BaseIntegerIdEntity) o;
 		return this.id.equals(that.id);
 	}
 

@@ -17,8 +17,10 @@ import java.time.Duration;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "products", indexes = { @Index(name = "index_products_name", columnList = "name"),
-		@Index(name = "index_products_category_id", columnList = "categoryId"), })
+@Table(name = "products",
+		indexes = { @Index(name = "index_products_name", columnList = "name"),
+				@Index(name = "index_products_category_id", columnList = "categoryId"),
+				@Index(name = "index_products_tree_id", columnList = "treeId"), })
 public class Product extends BaseAbstractAuditableEntity {
 
 	@Column(length = 64)
@@ -28,6 +30,9 @@ public class Product extends BaseAbstractAuditableEntity {
 	private String description;
 
 	private Duration expirationDuration;
+
+	@Column(nullable = false, length = 36)
+	private String treeId;
 
 	@Column(length = 36)
 	private String categoryId;

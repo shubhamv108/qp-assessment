@@ -20,7 +20,7 @@ public class ProductCategoryService {
 	}
 
 	public ProductCategory getOrCreate(final String name, final String description) {
-		return this.repository.findById(name)
+		return this.repository.findByName(name)
 			.orElse(this.repository.save(ProductCategory.builder().name(name).description(description).build()));
 	}
 
