@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/orders/{orderId}/items")
 @SecurityRequirement(name = "BearerAuth")
-@Tag(name = "Order Product")
+@Tag(name = "OrderItem")
 @ConditionalOnProperty(prefix = "service", name = "module", havingValue = "web")
 public class OrderItemController {
 
@@ -31,7 +31,7 @@ public class OrderItemController {
 	}
 
 	@GetMapping
-	public ResponseEntity<?> getAllOrderProducts(@PathVariable("orderId") final String orderId,
+	public ResponseEntity<?> getAllOrderItems(@PathVariable("orderId") final String orderId,
 			@RequestParam("userId") final String userId) {
 		Utils.validateUserOrThrowException(userId);
 		this.orderService.fetchByUserIdAndOrderOrderId(userId, orderId)

@@ -77,8 +77,8 @@ class OrderItemControllerTest extends AbstractSpringBootMVCTest {
 	void getAllOrderProducts_Success() throws Exception {
 		final Order existingOrder = this.repository.save(Order.builder()
 			.customerId(TestCommonConstants.USER_ID)
-			.customerType("DRIVER")
-			.uniqueReferenceId(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID)
+			.customerType("BUYER")
+			.clientUniqueReferenceId(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID)
 			.status(OrderStatus.CREATED)
 			.userId(TestCommonConstants.USER_ID)
 			.build());
@@ -87,8 +87,8 @@ class OrderItemControllerTest extends AbstractSpringBootMVCTest {
 			.orderId(existingOrder.getId())
 			.status(OrderItemStatus.SHIPPED)
 			.quantity(1)
-			.uniqueReferenceId(TestAppConstants.ORDER_ITEM_UNIQUE_REFERENCE_ID)
-			.productId(TestAppConstants.PRODUCT_ID)
+			.clientUniqueReferenceId(TestAppConstants.ORDER_ITEM_UNIQUE_REFERENCE_ID)
+			.inventoryId(TestAppConstants.INVENTORY_ID)
 			.build());
 
 		this.mockMvc
@@ -98,11 +98,11 @@ class OrderItemControllerTest extends AbstractSpringBootMVCTest {
 				.content(as(null)))
 			.andExpect(status().is(302))
 			.andExpect(content().json("{\n" + "    \"statusCode\": 302,\n" + "    \"data\": [\n" + "        {\n"
-					+ "            \"orderId\": \"" + existingOrder.getId() + "\",\n" + "            \"productId\": \""
-					+ TestAppConstants.PRODUCT_ID + "\",\n" + "            \"quantity\": 1,\n"
-					+ "            \"status\": \"SHIPPED\",\n" + "            \"uniqueReferenceId\": \""
-					+ existingProduct.getUniqueReferenceId() + "\"\n" + "        }\n" + "    ],\n"
-					+ "    \"error\": null\n" + "}"));
+					+ "            \"orderId\": \"" + existingOrder.getId() + "\",\n"
+					+ "            \"inventoryId\": \"" + TestAppConstants.INVENTORY_ID + "\",\n"
+					+ "            \"quantity\": 1,\n" + "            \"status\": \"SHIPPED\",\n"
+					+ "            \"clientUniqueReferenceId\": \"" + existingProduct.getClientUniqueReferenceId()
+					+ "\"\n" + "        }\n" + "    ],\n" + "    \"error\": null\n" + "}"));
 	}
 
 }

@@ -21,7 +21,7 @@ public class StringUtils {
 	}
 
 	public static boolean isEmpty(String input) {
-		return input == null || "".equals(input);
+		return input == null || "".equals(input) || "null".equals(input);
 	}
 
 }

@@ -10,6 +10,6 @@ public interface TestAppConstants {
 
 	String CUSTOMER_ID = "a2dca93c-fc74-47f6-a369-8940f6291e42";
 
-	String PRODUCT_ID = "TRACKING_DEVICE";
+	String INVENTORY_ID = "a2cca93c-fc74-47f6-a369-8940f6291e42";
 
 }

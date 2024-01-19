@@ -28,6 +28,6 @@ public class Order extends BaseAbstractAuditableEntity {
 	private OrderStatus status;
 
 	@Column(nullable = false, unique = true)
-	private String uniqueReferenceId;
+	private String clientUniqueReferenceId;
 
 }

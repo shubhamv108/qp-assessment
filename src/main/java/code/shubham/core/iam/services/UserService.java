@@ -48,7 +48,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public GetUserResponse getById(final String userId) {
+	public GetUserResponse fetchById(final String userId) {
 		return this.repository.findById(userId)
 			.map(user -> GetUserResponse.builder()
 				.user(new UserDTO(userId, user.getEmail()))

@@ -10,11 +10,11 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class OrderEventData {
+public class OrderDataDTO {
 
 	@NotNull
 	private OrderDTO order;
 
-	private List<OrderItemDTO> products;
+	private List<OrderItemDTO> items;
 
 }

@@ -1,5 +1,7 @@
 package code.shubham.commons.validators;
 
+import code.shubham.commons.utils.StringUtils;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -33,6 +35,26 @@ public abstract class AbstractValidator<OBJECT> implements IValidator<OBJECT> {
 		if (messagesValues == null)
 			this.messages.put(messageKey, messagesValues = new java.util.ArrayList<>());
 		return messagesValues.addAll(messageValue);
+	}
+
+	protected boolean isNotValidId(final String id) {
+		return StringUtils.isEmpty(id) || id.length() < 36;
+	}
+
+	protected boolean isUpdatable(final Object o) {
+		return o != null;
+	}
+
+	protected boolean isInvalidNumber(final Number n) {
+		return n == null;
+	}
+
+	protected boolean isInvalidPrice(final Double price) {
+		return this.isInvalidNumber(price) || price < 0.0;
+	}
+
+	protected boolean isInvalidQuantity(final Integer quantity) {
+		return this.isInvalidNumber(quantity) || quantity < 0;
 	}
 
 	@Override

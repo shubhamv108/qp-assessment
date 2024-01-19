@@ -7,6 +7,6 @@ public interface IUserService {
 
 	GetUserResponse getOrCreate(GetOrCreateUser.Request request);
 
-	GetUserResponse getById(String userId);
+	GetUserResponse fetchById(String userId);
 
 }

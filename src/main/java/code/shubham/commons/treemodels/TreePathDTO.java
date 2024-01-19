@@ -1,13 +1,13 @@
-package code.shubham.commons.tree.dao.models;
+package code.shubham.commons.treemodels;
 
 import lombok.*;
 
 @Builder
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TreeVO {
+public class TreePathDTO {
 
 	private String path;
 

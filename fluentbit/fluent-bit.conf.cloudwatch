@@ -17,6 +17,6 @@
     Name cloudwatch_logs
     Match *
     region ap-south-1
-    log_group_name craft
-    log_stream_prefix craft-
+    log_group_name grocery-booking
+    log_stream_prefix grocery-booking-
     auto_create_group On

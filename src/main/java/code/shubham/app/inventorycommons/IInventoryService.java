@@ -2,6 +2,8 @@ package code.shubham.app.inventorycommons;
 
 public interface IInventoryService {
 
-	boolean updateQuantity(String productTreeId, String supplierId, String userId, int quantity);
+	boolean incrementQuantity(String id, int quantity);
+
+	boolean hasQuantity(String id, int quantity);
 
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,14 +30,14 @@ public class OrderItemService {
 
 	public List<OrderItem> save(final String orderId, final List<OrderItemDTO> products) {
 		final List<OrderItem> orderItems = products.stream()
-			.map(productOrder -> OrderItem.builder()
+			.map(orderItem -> OrderItem.builder()
 				.orderId(orderId)
-				.quantity(productOrder.getQuantity())
+				.quantity(orderItem.getQuantity())
 				.status(OrderItemStatus.CREATED)
-				.productId(productOrder.getProductId())
-				.uniqueReferenceId(productOrder.getClientReferenceId())
+				.inventoryId(orderItem.getInventoryId())
+				.clientUniqueReferenceId(orderItem.getClientReferenceId())
 				.build())
-			.toList();
+			.collect(Collectors.toList());
 
 		log.info("[STARTED] persisting products for order id: {}", orderId);
 		final var persisted = this.repository.saveAll(orderItems);
@@ -45,7 +46,7 @@ public class OrderItemService {
 	}
 
 	public OrderItem updateStatus(final OrderItemStatus completedStatus, final String uniqueReferenceId) {
-		final OrderItem orderItem = this.repository.findByUniqueReferenceId(uniqueReferenceId)
+		final OrderItem orderItem = this.repository.findByClientUniqueReferenceId(uniqueReferenceId)
 			.orElseThrow(() -> new InvalidRequestException("uniqueReferenceId",
 					"no product with uniqueReferenceId %s found for order", uniqueReferenceId));
 		if (OrderItemStatus.COMPLETED.name().equals(orderItem.getStatus().name()))

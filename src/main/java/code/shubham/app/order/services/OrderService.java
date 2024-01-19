@@ -14,7 +14,7 @@ import code.shubham.app.order.dao.entities.OrderStatus;
 import code.shubham.app.order.dao.repositories.OrderRepository;
 import code.shubham.app.ordermodels.CreateOrderCommand;
 import code.shubham.app.ordermodels.OrderDTO;
-import code.shubham.app.ordermodels.OrderEventData;
+import code.shubham.app.ordermodels.OrderDataDTO;
 import code.shubham.app.ordermodels.OrderItemDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,11 +61,12 @@ public class OrderService {
 			.customerId(command.getCustomerId())
 			.customerType(command.getCustomerType())
 			.status(OrderStatus.CREATED)
-			.uniqueReferenceId(command.getClientReferenceId())
+			.clientUniqueReferenceId(command.getClientReferenceId())
 			.build();
 		final Order persisted = this.save(order);
-		final List<OrderItem> orderItems = this.orderItemService.save(order.getId(), command.getProducts());
-		this.publishEvent(persisted, orderItems, EventName.OrderCreated);
+		final List<OrderItem> orderItems = this.orderItemService.save(order.getId(), command.getItems());
+		final OrderDataDTO orderData = this.getOrderEventData(order, orderItems);
+		this.publishEvent(orderData, EventName.OrderCreated);
 		return persisted;
 	}
 
@@ -87,7 +88,8 @@ public class OrderService {
 	public Order setNextStatus(final Order order) {
 		order.setStatus(Utils.getNextInSequence(this.statusSequence, order.getStatus()));
 		Order updated = this.save(order);
-		this.publishEvent(updated, List.of(), EventName.OrderStatusUpdated);
+		final OrderDataDTO orderData = this.getOrderEventData(order, List.of());
+		this.publishEvent(orderData, EventName.OrderStatusUpdated);
 		return updated;
 	}
 
@@ -98,36 +100,19 @@ public class OrderService {
 		return updated;
 	}
 
-	private void publishEvent(final Order order, final List<OrderItem> products, final EventName eventName) {
-		log.info("[PUBLISHING] [{}] event for order Id: {}", eventName.name(), order.getId());
+	private void publishEvent(final OrderDataDTO orderData, final EventName eventName) {
+		log.info("[PUBLISHING] [{}] event for order Id: {}", eventName.name(), orderData.getOrder().getOrderId());
 		this.publisher.send(topicName,
 				Event.builder()
 					.eventName(eventName.name())
 					.eventType(EventType.ORDER.name())
-					.data(JsonUtils.get(OrderEventData.builder()
-						.order(OrderDTO.builder()
-							.orderId(order.getId())
-							.status(order.getStatus().name())
-							.customerId(order.getCustomerId())
-							.customerType(order.getCustomerType())
-							.userId(order.getUserId())
-							.uniqueReferenceId(order.getUniqueReferenceId())
-							.build())
-						.products(products.stream()
-							.map(product -> OrderItemDTO.builder()
-								.productId(product.getProductId())
-								.quantity(product.getQuantity())
-								.status(product.getStatus().name())
-								.clientReferenceId(product.getUniqueReferenceId())
-								.build())
-							.toList())
-						.build()))
+					.data(JsonUtils.get(orderData))
 					.createdAt(new Date())
-					.userId(order.getUserId())
-					.uniqueReferenceId(order.getUniqueReferenceId())
+					.userId(orderData.getOrder().getUserId())
+					.uniqueReferenceId(orderData.getOrder().getUniqueReferenceId())
 					.correlationId(CorrelationIDContext.get())
 					.build());
-		log.info("[PUBLISHED] [{}] event for order Id: {}", eventName.name(), order.getId());
+		log.info("[PUBLISHED] [{}] event for order Id: {}", eventName.name(), orderData.getOrder().getOrderId());
 	}
 
 	public Optional<Order> fetchByUserIdAndOrderOrderId(final String userId, final String orderId) {
@@ -136,6 +121,27 @@ public class OrderService {
 
 	public Optional<Order> fetchByOrderId(final String orderId) {
 		return this.repository.findById(orderId);
+	}
+
+	private OrderDataDTO getOrderEventData(final Order order, List<OrderItem> items) {
+		return OrderDataDTO.builder()
+			.order(OrderDTO.builder()
+				.orderId(order.getId())
+				.status(order.getStatus().name())
+				.customerId(order.getCustomerId())
+				.customerType(order.getCustomerType())
+				.userId(order.getUserId())
+				.uniqueReferenceId(order.getClientUniqueReferenceId())
+				.build())
+			.items(items.stream()
+				.map(item -> OrderItemDTO.builder()
+					.inventoryId(item.getInventoryId())
+					.quantity(item.getQuantity())
+					.status(item.getStatus().name())
+					.clientReferenceId(item.getClientUniqueReferenceId())
+					.build())
+				.toList())
+			.build();
 	}
 
 }

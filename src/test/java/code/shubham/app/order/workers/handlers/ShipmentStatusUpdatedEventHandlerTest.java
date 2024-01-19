@@ -48,7 +48,7 @@ class ShipmentStatusUpdatedEventHandlerTest extends AbstractSpringBootTest {
 	void handle_PREPARE_TO_DISPATCH_shipment_status() {
 		final Order exisitingOrder = this.repository.save(Order.builder()
 			.status(OrderStatus.CREATED)
-			.uniqueReferenceId(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID)
+			.clientUniqueReferenceId(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID)
 			.userId(TestCommonConstants.USER_ID)
 			.customerId(TestAppConstants.CUSTOMER_ID)
 			.customerType("DRIVER")
@@ -56,10 +56,10 @@ class ShipmentStatusUpdatedEventHandlerTest extends AbstractSpringBootTest {
 
 		final OrderItem exisitingOrderProduct = this.orderProductRepository.save(OrderItem.builder()
 			.status(OrderItemStatus.CREATED)
-			.uniqueReferenceId(
-					UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.PRODUCT_ID))
+			.clientUniqueReferenceId(
+					UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.INVENTORY_ID))
 			.orderId(exisitingOrder.getId())
-			.productId(TestAppConstants.PRODUCT_ID)
+			.inventoryId(TestAppConstants.INVENTORY_ID)
 			.quantity(1)
 			.build());
 
@@ -75,22 +75,22 @@ class ShipmentStatusUpdatedEventHandlerTest extends AbstractSpringBootTest {
 		assertEquals(1, orderProducts.size());
 		assertEquals(TestCommonConstants.USER_ID, orders.get(0).getUserId());
 		assertEquals(OrderStatus.CREATED, orders.get(0).getStatus());
-		assertEquals(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID, orders.get(0).getUniqueReferenceId());
+		assertEquals(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID, orders.get(0).getClientUniqueReferenceId());
 		assertEquals(TestAppConstants.CUSTOMER_ID, orders.get(0).getCustomerId());
 		assertEquals("DRIVER", orders.get(0).getCustomerType());
 		assertEquals(orders.get(0).getId(), orderProducts.get(0).getOrderId());
-		assertEquals(TestAppConstants.PRODUCT_ID, orderProducts.get(0).getProductId());
+		assertEquals(TestAppConstants.INVENTORY_ID, orderProducts.get(0).getInventoryId());
 		assertEquals(OrderItemStatus.SHIPPED.name(), orderProducts.get(0).getStatus().name());
 		assertEquals(1, orderProducts.get(0).getQuantity());
-		assertEquals(UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.PRODUCT_ID),
-				orderProducts.get(0).getUniqueReferenceId());
+		assertEquals(UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.INVENTORY_ID),
+				orderProducts.get(0).getClientUniqueReferenceId());
 	}
 
 	@Test
 	void handle_DELIVERED_shipment_status() {
 		final Order exisitingOrder = this.repository.save(Order.builder()
 			.status(OrderStatus.CREATED)
-			.uniqueReferenceId(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID)
+			.clientUniqueReferenceId(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID)
 			.userId(TestCommonConstants.USER_ID)
 			.customerId(TestAppConstants.CUSTOMER_ID)
 			.customerType("DRIVER")
@@ -98,10 +98,10 @@ class ShipmentStatusUpdatedEventHandlerTest extends AbstractSpringBootTest {
 
 		final OrderItem exisitingOrderProduct = this.orderProductRepository.save(OrderItem.builder()
 			.status(OrderItemStatus.SHIPPED)
-			.uniqueReferenceId(
-					UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.PRODUCT_ID))
+			.clientUniqueReferenceId(
+					UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.INVENTORY_ID))
 			.orderId(exisitingOrder.getId())
-			.productId(TestAppConstants.PRODUCT_ID)
+			.inventoryId(TestAppConstants.INVENTORY_ID)
 			.quantity(1)
 			.build());
 
@@ -117,15 +117,15 @@ class ShipmentStatusUpdatedEventHandlerTest extends AbstractSpringBootTest {
 		assertEquals(1, orderProducts.size());
 		assertEquals(TestCommonConstants.USER_ID, orders.get(0).getUserId());
 		assertEquals(OrderStatus.COMPLETED.name(), orders.get(0).getStatus().name());
-		assertEquals(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID, orders.get(0).getUniqueReferenceId());
+		assertEquals(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID, orders.get(0).getClientUniqueReferenceId());
 		assertEquals(TestAppConstants.CUSTOMER_ID, orders.get(0).getCustomerId());
 		assertEquals("DRIVER", orders.get(0).getCustomerType());
 		assertEquals(orders.get(0).getId(), orderProducts.get(0).getOrderId());
-		assertEquals(TestAppConstants.PRODUCT_ID, orderProducts.get(0).getProductId());
+		assertEquals(TestAppConstants.INVENTORY_ID, orderProducts.get(0).getInventoryId());
 		assertEquals(OrderItemStatus.COMPLETED.name(), orderProducts.get(0).getStatus().name());
 		assertEquals(1, orderProducts.get(0).getQuantity());
-		assertEquals(UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.PRODUCT_ID),
-				orderProducts.get(0).getUniqueReferenceId());
+		assertEquals(UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.INVENTORY_ID),
+				orderProducts.get(0).getClientUniqueReferenceId());
 	}
 
 }

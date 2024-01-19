@@ -23,14 +23,14 @@ import lombok.experimental.SuperBuilder;
 		uniqueConstraints = { @UniqueConstraint(columnNames = { "productTreeId, supplierId" }) })
 public class Inventory extends BaseAbstractAuditableEntity {
 
-	@Column(columnDefinition = "INT CHECK (quantity > 0)")
+	@Column(columnDefinition = "INT CHECK (quantity >= 0)")
 	private int quantity;
 
 	@Column(columnDefinition = "DECIMAL(10,2) CHECK (price >= 0)")
 	private double price;
 
 	@Column(nullable = false, length = 36, updatable = false)
-	private String productTreeId;
+	private Integer productTreeId;
 
 	@Column(nullable = false, length = 36, updatable = false)
 	private String supplierId;

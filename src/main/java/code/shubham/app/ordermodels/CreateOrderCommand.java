@@ -16,7 +16,7 @@ import java.util.List;
 public class CreateOrderCommand {
 
 	@NotNull
-	private List<OrderItemDTO> products;
+	private List<OrderItemDTO> items;
 
 	@NotNull
 	@NotEmpty

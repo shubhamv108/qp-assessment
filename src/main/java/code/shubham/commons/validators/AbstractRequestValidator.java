@@ -16,9 +16,8 @@ public abstract class AbstractRequestValidator<Request> extends AbstractValidato
 	@Override
 	public IValidator<Request> validateOrThrowException(final Request request) {
 		this.validate(request);
-		if (this.hasMessages()) {
+		if (this.hasMessages())
 			this.throwException();
-		}
 		return this;
 	}
 

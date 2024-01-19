@@ -56,7 +56,7 @@ class OrderControllerTest extends AbstractSpringBootMVCTest {
 		final Order created = this.repository.save(Order.builder()
 			.customerId(TestCommonConstants.USER_ID)
 			.customerType("DRIVER")
-			.uniqueReferenceId(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID)
+			.clientUniqueReferenceId(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID)
 			.status(OrderStatus.CREATED)
 			.userId(TestCommonConstants.USER_ID)
 			.build());

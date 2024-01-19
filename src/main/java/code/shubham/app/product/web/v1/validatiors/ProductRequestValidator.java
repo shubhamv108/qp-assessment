@@ -1,7 +1,8 @@
-package code.shubham.app.product.web.v1.validations;
+package code.shubham.app.product.web.v1.validatiors;
 
 import code.shubham.app.productmodels.ProductDTO;
 import code.shubham.commons.treemodels.TreeNodeDTO;
+import code.shubham.commons.utils.StringUtils;
 import code.shubham.commons.validators.AbstractRequestValidator;
 import code.shubham.commons.validators.IValidator;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,14 +22,12 @@ public class ProductRequestValidator extends AbstractRequestValidator<ProductDTO
 	public IValidator<ProductDTO> validate(final ProductDTO request) {
 		super.validate(request);
 
-		if (request.getName() == null)
+		if (StringUtils.isEmpty(request.getName()))
 			this.putMessage("name", MUST_NOT_BE_EMPTY, "name");
-		if (request.getDescription() == null)
+		if (StringUtils.isEmpty(request.getDescription()))
 			this.putMessage("description", MUST_NOT_BE_EMPTY, "description");
-		if (request.getCategoryId() == null)
+		if (this.isNotValidId(request.getCategoryId()))
 			this.putMessage("categoryId", MUST_NOT_BE_EMPTY, "categoryId");
-		if (request.getDuration() == null)
-			this.putMessage("duration", MUST_NOT_BE_EMPTY, "duration");
 
 		this.validateTree(new TreeNodeDTO("$$$", null, request.getChildren()), 1);
 

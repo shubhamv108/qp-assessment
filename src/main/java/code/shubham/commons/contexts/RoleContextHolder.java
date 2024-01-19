@@ -27,6 +27,10 @@ public class RoleContextHolder {
 		return has(RoleName.ADMIN.name());
 	}
 
+	public static boolean isUser() {
+		return has(RoleName.USER.name());
+	}
+
 	public static boolean has(final String role) {
 		return Optional.ofNullable(CONTEXT.get()).map(roles -> roles.contains(role)).orElse(false);
 	}

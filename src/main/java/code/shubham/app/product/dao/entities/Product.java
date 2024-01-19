@@ -29,10 +29,8 @@ public class Product extends BaseAbstractAuditableEntity {
 	@Column(length = 256)
 	private String description;
 
-	private Duration expirationDuration;
-
-	@Column(nullable = false, length = 36)
-	private String treeId;
+	@Column(nullable = false)
+	private Integer treeId;
 
 	@Column(length = 36)
 	private String categoryId;

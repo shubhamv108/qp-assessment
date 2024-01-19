@@ -1,24 +1,25 @@
 package code.shubham.app.productmodels;
 
 import code.shubham.commons.treemodels.TreeNodeDTO;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class ProductDTO {
+
+	private String productId;
 
 	private String name;
 
 	private String description;
 
 	private String categoryId;
-
-	private Duration duration;
 
 	private List<TreeNodeDTO> children;
 
@@ -28,15 +29,20 @@ public class ProductDTO {
 
 	public static class ProductDTOBuilder {
 
+		private String id;
+
 		private String name;
 
 		private String description;
 
 		private String categoryId;
 
-		private Duration duration;
-
 		private final List<TreeNodeDTO> children = new ArrayList<>();
+
+		public ProductDTOBuilder id(final String id) {
+			this.id = id;
+			return this;
+		}
 
 		public ProductDTOBuilder name(final String name) {
 			this.name = name;
@@ -53,18 +59,13 @@ public class ProductDTO {
 			return this;
 		}
 
-		public ProductDTOBuilder duration(final Duration duration) {
-			this.duration = duration;
-			return this;
-		}
-
 		public ProductDTOBuilder child(final TreeNodeDTO node) {
 			this.children.add(node);
 			return this;
 		}
 
 		public ProductDTO build() {
-			return new ProductDTO(name, description, categoryId, duration, children);
+			return new ProductDTO(id, name, description, categoryId, children);
 		}
 
 	}

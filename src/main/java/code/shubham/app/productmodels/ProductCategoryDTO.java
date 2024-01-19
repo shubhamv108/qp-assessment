@@ -13,13 +13,10 @@ import lombok.Setter;
 @Setter
 public class ProductCategoryDTO {
 
-	@NotNull
-	@NotEmpty
-	@Min(3)
-	@Max(64)
-	private final String name;
+	private String productCategoryId;
 
-	@Max(256)
-	private final String description;
+	private String name;
+
+	private String description;
 
 }

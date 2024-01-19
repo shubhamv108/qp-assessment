@@ -10,7 +10,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
+@SuperBuilder
 @Builder
 @Data
 @NoArgsConstructor
@@ -23,15 +25,15 @@ public class OrderItem extends BaseAbstractAuditableEntity {
 	@Column(nullable = false)
 	private String orderId;
 
-	@Column(nullable = false)
-	private String productId;
+	@Column(nullable = false, length = 36)
+	private String inventoryId;
 
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "INT CHECK (quantity > 0)")
 	private int quantity;
 
 	private OrderItemStatus status;
 
 	@Column(nullable = false, unique = true)
-	private String uniqueReferenceId;
+	private String clientUniqueReferenceId;
 
 }

@@ -17,7 +17,7 @@ public class OrderItemDTO {
 	@NotEmpty
 	@Min(3)
 	@Max(40)
-	private String productId;
+	private String inventoryId;
 
 	@NotNull
 	@NotEmpty

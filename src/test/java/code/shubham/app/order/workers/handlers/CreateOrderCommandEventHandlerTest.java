@@ -53,15 +53,15 @@ class CreateOrderCommandEventHandlerTest extends AbstractSpringBootTest {
 		assertEquals(1, orderProducts.size());
 		assertEquals(TestCommonConstants.USER_ID, orders.get(0).getUserId());
 		assertEquals(OrderStatus.CREATED, orders.get(0).getStatus());
-		assertEquals(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID, orders.get(0).getUniqueReferenceId());
+		assertEquals(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID, orders.get(0).getClientUniqueReferenceId());
 		assertEquals(TestAppConstants.CUSTOMER_ID, orders.get(0).getCustomerId());
 		assertEquals("BUYER", orders.get(0).getCustomerType());
 		assertEquals(orders.get(0).getId(), orderProducts.get(0).getOrderId());
-		assertEquals(TestAppConstants.PRODUCT_ID, orderProducts.get(0).getProductId());
+		assertEquals(TestAppConstants.INVENTORY_ID, orderProducts.get(0).getInventoryId());
 		assertEquals(OrderItemStatus.CREATED.name(), orderProducts.get(0).getStatus().name());
 		assertEquals(1, orderProducts.get(0).getQuantity());
-		assertEquals(UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.PRODUCT_ID),
-				orderProducts.get(0).getUniqueReferenceId());
+		assertEquals(UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.INVENTORY_ID),
+				orderProducts.get(0).getClientUniqueReferenceId());
 	}
 
 }

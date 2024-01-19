@@ -6,7 +6,7 @@ import code.shubham.app.order.dao.entities.Order;
 import code.shubham.app.order.dao.entities.OrderItemStatus;
 import code.shubham.app.ordermodels.CreateOrderCommand;
 import code.shubham.app.ordermodels.OrderDTO;
-import code.shubham.app.ordermodels.OrderEventData;
+import code.shubham.app.ordermodels.OrderDataDTO;
 import code.shubham.app.ordermodels.OrderItemDTO;
 import code.shubham.commons.TestCommonConstants;
 import code.shubham.commons.contexts.CorrelationIDContext;
@@ -23,26 +23,26 @@ public class TestAppEventUtils {
 		return Event.builder()
 			.eventName(eventName.name())
 			.eventType(EventType.ORDER.name())
-			.data(JsonUtils.get(OrderEventData.builder()
+			.data(JsonUtils.get(OrderDataDTO.builder()
 				.order(OrderDTO.builder()
 					.orderId(order.getId())
 					.status(order.getStatus().name())
 					.customerId(order.getCustomerId())
 					.customerType(order.getCustomerType())
 					.userId(order.getUserId())
-					.uniqueReferenceId(order.getUniqueReferenceId())
+					.uniqueReferenceId(order.getClientUniqueReferenceId())
 					.build())
-				.products(List.of(OrderItemDTO.builder()
-					.productId(TestAppConstants.PRODUCT_ID)
+				.items(List.of(OrderItemDTO.builder()
+					.inventoryId(TestAppConstants.INVENTORY_ID)
 					.quantity(1)
 					.status(OrderItemStatus.CREATED.name())
 					.clientReferenceId(UUIDUtils
-						.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.PRODUCT_ID))
+						.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.INVENTORY_ID))
 					.build()))
 				.build()))
 			.createdAt(new Date())
 			.userId(order.getUserId())
-			.uniqueReferenceId(order.getUniqueReferenceId())
+			.uniqueReferenceId(order.getClientUniqueReferenceId())
 			.correlationId(CorrelationIDContext.get())
 			.build();
 	}
@@ -52,11 +52,11 @@ public class TestAppEventUtils {
 			.eventName(EventName.CreateOrderCommand.name())
 			.eventType(EventType.ORDER.name())
 			.data(JsonUtils.get(CreateOrderCommand.builder()
-				.products(List.of(OrderItemDTO.builder()
-					.productId(TestAppConstants.PRODUCT_ID)
+				.items(List.of(OrderItemDTO.builder()
+					.inventoryId(TestAppConstants.INVENTORY_ID)
 					.quantity(1)
 					.clientReferenceId(UUIDUtils
-						.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.PRODUCT_ID))
+						.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.INVENTORY_ID))
 					.build()))
 				.userId(TestCommonConstants.USER_ID)
 				.customerId(TestAppConstants.CUSTOMER_ID)
