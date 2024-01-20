@@ -5,7 +5,6 @@ import code.shubham.app.cart.dao.entities.Cart;
 import code.shubham.app.cart.dao.entities.CartItem;
 import code.shubham.app.cart.dao.repositories.CartItemRepository;
 import code.shubham.app.cart.dao.repositories.CartRepository;
-import code.shubham.app.cartcommons.ICartItemService;
 import code.shubham.app.cartmodels.AddCartItemRequest;
 import code.shubham.app.cartmodels.CartItemDTO;
 import code.shubham.app.cartmodels.UpdateCartItemQuantityRequest;
@@ -16,13 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class CartItemService implements ICartItemService {
+public class CartItemService {
 
 	private final CartRepository cartRepository;
 
@@ -38,24 +37,18 @@ public class CartItemService implements ICartItemService {
 		this.inventoryService = inventoryService;
 	}
 
-	@Override
 	public List<CartItem> fetchAllByCartId(final String cartId) {
+		this.cartRepository.findById(cartId);
+
 		return this.cartItemRepository.findAllByCartId(cartId);
 	}
 
-	@Override
-	public List<CartItem> fetchAllByCartIdAndUserId(final String cartId, final String userId) {
-		return this.cartRepository.findByIdAndUserId(cartId, userId)
-			.map(cart -> this.cartItemRepository.findAllByCartId(cart.getId()))
-			.orElse(null);
-	}
-
-	public CartItemDTO add(final AddCartItemRequest request, final String cartId) {
+	public CartItemDTO add(final AddCartItemRequest request, final String cartId, final String userId) {
 		Cart cart;
 		if (StringUtils.isEmpty(cartId))
-			cart = this.cartRepository.save(Cart.builder().userId(request.getUserId()).build());
+			cart = this.cartRepository.save(Cart.builder().userId(userId).build());
 		else
-			cart = this.cartRepository.findByIdAndUserId(cartId, request.getUserId())
+			cart = this.cartRepository.findByIdAndUserId(cartId, userId)
 				.orElseThrow(() -> new InvalidRequestException("cartId", "invalid cart id in request"));
 
 		final Optional<CartItem> existingItem = this.cartItemRepository.findByCartIdAndInventoryId(cartId,
@@ -71,9 +64,10 @@ public class CartItemService implements ICartItemService {
 	}
 
 	public CartItemDTO updateQuantity(final UpdateCartItemQuantityRequest request, final String cartItemId,
-			final String cartId) {
-		this.cartRepository.findByIdAndUserId(cartId, request.getUserId())
+			final String cartId, final String userId) {
+		this.cartRepository.findByIdAndUserId(cartId, userId)
 			.orElseThrow(() -> new InvalidRequestException("cartId", "invalid cart id in request"));
+
 		final CartItem existingItem = this.cartItemRepository.findById(cartItemId)
 			.orElseThrow(() -> new InvalidRequestException("cartItemId", "No such cart item found: %s", cartItemId));
 		return CartItemConvertor.convert(this.updateQuantity(existingItem, request.getIncrementBy()));
@@ -89,6 +83,10 @@ public class CartItemService implements ICartItemService {
 
 	public boolean updateQuantity(final Integer incrementBy, final String cartItemId, final String cartId) {
 		return this.cartItemRepository.updateCartItemQuantity(incrementBy, cartItemId, cartId) == 1;
+	}
+
+	protected void clear(final Collection<String> ids) {
+		this.cartItemRepository.deleteAllById(ids);
 	}
 
 }

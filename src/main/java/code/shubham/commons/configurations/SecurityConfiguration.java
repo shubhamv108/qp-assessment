@@ -27,14 +27,17 @@ public class SecurityConfiguration {
 
 			.authorizeHttpRequests(a -> a
 				.requestMatchers(HttpMethod.GET, "/v1/products", "/v1/products/**", "/v1/suppliers", "/v1/suppliers/**",
-						"/v1/inventories", "/v1/inventories/**", "/v1/carts/*/items")
+						"/v1/inventories", "/v1/inventories/**", "/v1/carts/*/items", "/v1/carts/*")
 				.permitAll())
 			.authorizeHttpRequests(a -> a.requestMatchers(HttpMethod.POST, "/v1/carts/*/items").permitAll())
-			.authorizeHttpRequests(a -> a.requestMatchers(HttpMethod.PATCH, "/v1/carts/*/items/**").permitAll())
+			.authorizeHttpRequests(a -> a.requestMatchers(HttpMethod.PATCH, "/v1/carts/*/items/*").permitAll())
+			.authorizeHttpRequests(a -> a
+				.requestMatchers(HttpMethod.POST, "/v1/products", "/v1/suppliers", "/v1/inventories",
+						"/v1/carts/*/items/users/**")
+				.fullyAuthenticated())
 			.authorizeHttpRequests(
-					a -> a.requestMatchers(HttpMethod.POST, "/v1/products", "/v1/suppliers", "/v1/inventories")
+					a -> a.requestMatchers(HttpMethod.PATCH, "/v1/products/**", "/v1/carts/*/items/*/users/**")
 						.fullyAuthenticated())
-			.authorizeHttpRequests(a -> a.requestMatchers(HttpMethod.PATCH, "/v1/products/**").fullyAuthenticated())
 			.authorizeHttpRequests(a -> a.requestMatchers(HttpMethod.PUT, "/v1/products").fullyAuthenticated())
 			.authorizeHttpRequests(a -> a.requestMatchers("/**").fullyAuthenticated())
 			.sessionManagement(a -> a.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

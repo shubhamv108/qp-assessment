@@ -6,9 +6,13 @@ import code.shubham.app.cart.web.v1.validators.AddCartItemRequestValidator;
 import code.shubham.app.cart.web.v1.validators.UpdateCartItemQuantityRequestValidator;
 import code.shubham.app.cartmodels.AddCartItemRequest;
 import code.shubham.app.cartmodels.UpdateCartItemQuantityRequest;
+import code.shubham.commons.annotations.Role;
 import code.shubham.commons.contexts.RoleContextHolder;
+import code.shubham.commons.contexts.UserIDContextHolder;
+import code.shubham.commons.exceptions.InvalidRequestException;
 import code.shubham.commons.utils.ResponseUtils;
 import code.shubham.commons.utils.Utils;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -33,11 +37,7 @@ public class CartItemController {
 	public ResponseEntity<?> add(@PathVariable(value = "cartId", required = false) final String cartId,
 			@RequestBody final AddCartItemRequest request) {
 		new AddCartItemRequestValidator().validateOrThrowException(request);
-
-		if (request.getUserId() != null && RoleContextHolder.isUser())
-			Utils.validateUserOrThrowException(request.getUserId());
-
-		return ResponseUtils.getDataResponseEntity(HttpStatus.CREATED, this.service.add(request, cartId));
+		return ResponseUtils.getDataResponseEntity(HttpStatus.CREATED, this.service.add(request, cartId, null));
 	}
 
 	@PatchMapping("/{cartItemId}")
@@ -46,13 +46,29 @@ public class CartItemController {
 			@RequestBody final UpdateCartItemQuantityRequest request) {
 		new UpdateCartItemQuantityRequestValidator().validateOrThrowException(request);
 		return ResponseUtils.getDataResponseEntity(HttpStatus.OK,
-				this.service.updateQuantity(request, cartItemId, cartId));
+				this.service.updateQuantity(request, cartItemId, cartId, null));
 	}
 
-	@GetMapping
-	public ResponseEntity<?> getAll(@PathVariable("cartId") final String cartId) {
+	@SecurityRequirement(name = "BearerAuth")
+	@Role("USER")
+	@PostMapping("/users/{userId}")
+	public ResponseEntity<?> add(@PathVariable(value = "cartId") final String cartId,
+			@PathVariable(value = "userId") final String userId, @RequestBody final AddCartItemRequest request) {
+		new AddCartItemRequestValidator().validateOrThrowException(request);
+		Utils.validateUserOrThrowException(userId);
+		return ResponseUtils.getDataResponseEntity(HttpStatus.CREATED, this.service.add(request, cartId, userId));
+	}
+
+	@SecurityRequirement(name = "BearerAuth")
+	@Role("USER")
+	@PatchMapping("/{cartItemId}/users/{userId}")
+	public ResponseEntity<?> updateQuantity(@PathVariable("cartId") final String cartId,
+			@PathVariable("cartItemId") final String cartItemId, @PathVariable("userId") final String userId,
+			@RequestBody final UpdateCartItemQuantityRequest request) {
+		new UpdateCartItemQuantityRequestValidator().validateOrThrowException(request);
+		Utils.validateUserOrThrowException(userId);
 		return ResponseUtils.getDataResponseEntity(HttpStatus.OK,
-				this.service.fetchAllByCartId(cartId).stream().map(CartItemConvertor::convert).toList());
+				this.service.updateQuantity(request, cartItemId, cartId, userId));
 	}
 
 }

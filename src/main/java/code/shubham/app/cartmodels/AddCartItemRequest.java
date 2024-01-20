@@ -13,8 +13,6 @@ import lombok.*;
 @AllArgsConstructor
 public class AddCartItemRequest {
 
-	private String userId;
-
 	@NotEmpty
 	@NotNull
 	@Min(36)

@@ -48,12 +48,16 @@ public class TestAppEventUtils {
 	}
 
 	public static Event getCreateOrderCommandEvent() {
+		return getCreateOrderCommandEvent(TestAppConstants.INVENTORY_ID);
+	}
+
+	public static Event getCreateOrderCommandEvent(String inventoryId) {
 		return Event.builder()
 			.eventName(EventName.CreateOrderCommand.name())
 			.eventType(EventType.ORDER.name())
 			.data(JsonUtils.get(CreateOrderCommand.builder()
 				.items(List.of(OrderItemDTO.builder()
-					.inventoryId(TestAppConstants.INVENTORY_ID)
+					.inventoryId(inventoryId)
 					.quantity(1)
 					.clientReferenceId(UUIDUtils
 						.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.INVENTORY_ID))

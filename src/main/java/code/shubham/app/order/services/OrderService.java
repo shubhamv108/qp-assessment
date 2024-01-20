@@ -54,8 +54,7 @@ public class OrderService {
 		return this.repository.findAllByUserId(userId);
 	}
 
-	@Transactional(rollbackFor = Exception.class)
-	public Order create(final CreateOrderCommand command) {
+	public OrderDataDTO create(final CreateOrderCommand command) {
 		final Order order = Order.builder()
 			.userId(command.getUserId())
 			.customerId(command.getCustomerId())
@@ -64,13 +63,13 @@ public class OrderService {
 			.clientUniqueReferenceId(command.getClientReferenceId())
 			.build();
 		final Order persisted = this.save(order);
-		final List<OrderItem> orderItems = this.orderItemService.save(order.getId(), command.getItems());
-		final OrderDataDTO orderData = this.getOrderEventData(order, orderItems);
+		final List<OrderItem> orderItems = this.orderItemService.save(persisted.getId(), command.getItems());
+		final OrderDataDTO orderData = this.getOrderEventData(persisted, orderItems);
 		this.publishEvent(orderData, EventName.OrderCreated);
-		return persisted;
+		return orderData;
 	}
 
-	@Transactional(rollbackFor = Exception.class)
+	@Transactional
 	public Order updateStatus(final String orderId, final OrderStatus completedStatus) {
 		final Order order = this.repository.findById(orderId)
 			.orElseThrow(() -> new InvalidRequestException("orderId", "No order found for orderId: %s", orderId));

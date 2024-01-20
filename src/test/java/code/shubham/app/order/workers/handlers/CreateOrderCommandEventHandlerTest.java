@@ -2,6 +2,8 @@ package code.shubham.app.order.workers.handlers;
 
 import code.shubham.app.TestAppConstants;
 import code.shubham.app.TestAppEventUtils;
+import code.shubham.app.inventory.dao.entities.Inventory;
+import code.shubham.app.inventory.dao.repositories.InventoryRepository;
 import code.shubham.app.order.dao.entities.OrderItemStatus;
 import code.shubham.app.order.dao.entities.OrderStatus;
 import code.shubham.app.order.dao.repositories.OrderItemRepository;
@@ -28,22 +30,34 @@ class CreateOrderCommandEventHandlerTest extends AbstractSpringBootTest {
 	@Autowired
 	private OrderItemRepository orderProductRepository;
 
+	@Autowired
+	private InventoryRepository inventoryRepository;
+
 	@BeforeEach
 	public void setUp() {
 		super.setUp();
 		truncate("orders");
 		truncate("order_items");
+		truncate("inventories");
 	}
 
 	@AfterEach
 	void tearDown() {
 		truncate("orders");
 		truncate("order_items");
+		truncate("inventories");
 	}
 
 	@Test
 	void handle_success() {
-		final Event event = TestAppEventUtils.getCreateOrderCommandEvent();
+		final Inventory existingInventory = this.inventoryRepository.save(Inventory.builder()
+			.quantity(1)
+			.price(10)
+			.userId(TestCommonConstants.USER_ID)
+			.supplierId("test")
+			.productTreeId(11)
+			.build());
+		final Event event = TestAppEventUtils.getCreateOrderCommandEvent(existingInventory.getId());
 
 		this.handler.handle(event);
 
@@ -57,7 +71,7 @@ class CreateOrderCommandEventHandlerTest extends AbstractSpringBootTest {
 		assertEquals(TestAppConstants.CUSTOMER_ID, orders.get(0).getCustomerId());
 		assertEquals("BUYER", orders.get(0).getCustomerType());
 		assertEquals(orders.get(0).getId(), orderProducts.get(0).getOrderId());
-		assertEquals(TestAppConstants.INVENTORY_ID, orderProducts.get(0).getInventoryId());
+		assertEquals(existingInventory.getId(), orderProducts.get(0).getInventoryId());
 		assertEquals(OrderItemStatus.CREATED.name(), orderProducts.get(0).getStatus().name());
 		assertEquals(1, orderProducts.get(0).getQuantity());
 		assertEquals(UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.INVENTORY_ID),

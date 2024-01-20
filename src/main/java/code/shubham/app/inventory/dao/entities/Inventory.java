@@ -23,8 +23,9 @@ import lombok.experimental.SuperBuilder;
 		uniqueConstraints = { @UniqueConstraint(columnNames = { "productTreeId, supplierId" }) })
 public class Inventory extends BaseAbstractAuditableEntity {
 
-	@Column(columnDefinition = "INT CHECK (quantity >= 0)")
-	private int quantity;
+	@Builder.Default
+	@Column(columnDefinition = "INT CHECK (quantity >= 0) default '0'")
+	private int quantity = 0;
 
 	@Column(columnDefinition = "DECIMAL(10,2) CHECK (price >= 0)")
 	private double price;

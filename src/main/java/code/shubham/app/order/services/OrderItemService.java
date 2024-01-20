@@ -1,5 +1,6 @@
 package code.shubham.app.order.services;
 
+import code.shubham.app.inventorycommons.IInventoryService;
 import code.shubham.commons.exceptions.InvalidRequestException;
 import code.shubham.commons.utils.Utils;
 import code.shubham.app.order.dao.entities.OrderItem;
@@ -23,13 +24,18 @@ public class OrderItemService {
 
 	private final OrderItemRepository repository;
 
+	private final IInventoryService inventoryService;
+
 	@Autowired
-	public OrderItemService(final OrderItemRepository repository) {
+	public OrderItemService(final OrderItemRepository repository, final IInventoryService inventoryService) {
 		this.repository = repository;
+		this.inventoryService = inventoryService;
 	}
 
-	public List<OrderItem> save(final String orderId, final List<OrderItemDTO> products) {
-		final List<OrderItem> orderItems = products.stream()
+	public List<OrderItem> save(final String orderId, final List<OrderItemDTO> items) {
+		items.forEach(item -> this.inventoryService.incrementQuantity(item.getInventoryId(), item.getQuantity()));
+
+		final List<OrderItem> orderItems = items.stream()
 			.map(orderItem -> OrderItem.builder()
 				.orderId(orderId)
 				.quantity(orderItem.getQuantity())
@@ -39,9 +45,9 @@ public class OrderItemService {
 				.build())
 			.collect(Collectors.toList());
 
-		log.info("[STARTED] persisting products for order id: {}", orderId);
+		log.info("[STARTED] persisting items for order id: {}", orderId);
 		final var persisted = this.repository.saveAll(orderItems);
-		log.info("[COMPLETED] persisted products for order id: {}", orderId);
+		log.info("[COMPLETED] persisted items for order id: {}", orderId);
 		return persisted;
 	}
 
