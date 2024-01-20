@@ -14,7 +14,7 @@
 					"oauth2": [
 						{
 							"key": "useBrowser",
-							"value": true,
+							"value": false,
 							"type": "boolean"
 						},
 						{
@@ -477,7 +477,7 @@
 			"response": []
 		},
 		{
-			"name": "[GET] CartItem-All",
+			"name": "[GET] Cart-AllItems",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -537,40 +537,6 @@
 						"v1",
 						"carts",
 						"{{cartId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "[GET] CartItem-AllByUser",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/v1/carts/{{cartId}}/users/{{buyerUserId}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"carts",
-						"{{cartId}}",
-						"users",
-						"{{buyerUserId}}"
 					]
 				}
 			},
@@ -666,6 +632,40 @@
 			"response": []
 		},
 		{
+			"name": "[GET] CartItem-AllByUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/carts/{{cartId}}/users/{{buyerUserId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"carts",
+						"{{cartId}}",
+						"users",
+						"{{buyerUserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "[POST] Order-Create",
 			"request": {
 				"auth": {
@@ -682,7 +682,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"cartId\": \"{{cartId}}\",\n    \"clientReferenceId\": \"fbaef9fc-f131-4f24-b8e1-e2975f1da0e2\",\n    \"userId\": \"{{buyerUserId}}\"\n}",
+					"raw": "{\n    \"cartId\": \"{{cartId}}\",\n    \"clientReferenceId\": \"fbaef9fc-f131-4f24-b8e1-e2975f1da0e3\",\n    \"userId\": \"{{buyerUserId}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
