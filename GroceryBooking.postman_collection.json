@@ -14,7 +14,7 @@
 					"oauth2": [
 						{
 							"key": "useBrowser",
-							"value": false,
+							"value": true,
 							"type": "boolean"
 						},
 						{
@@ -188,59 +188,7 @@
 			},
 			"request": {
 				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "accessTokenUrl",
-							"value": "https://oauth2.googleapis.com/token",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "Googlw OAuth2",
-							"type": "string"
-						},
-						{
-							"key": "useBrowser",
-							"value": true,
-							"type": "boolean"
-						},
-						{
-							"key": "authUrl",
-							"value": "https://accounts.google.com/o/oauth2/auth",
-							"type": "string"
-						},
-						{
-							"key": "scope",
-							"value": "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "authorization_code",
-							"type": "string"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://oauth.pstmn.io/v1/callback",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "clientSecret",
-							"value": "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",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "809236032393-ms8jl2qt0v6uu0gakv0339ekoq5iva26.apps.googleusercontent.com",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [],
@@ -272,76 +220,19 @@
 		},
 		{
 			"name": "[GET] User-Info",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"auth": {
-					"type": "oauth2",
-					"oauth2": [
+					"type": "bearer",
+					"bearer": [
 						{
-							"key": "useBrowser",
-							"value": true,
-							"type": "boolean"
-						},
-						{
-							"key": "accessTokenUrl",
-							"value": "https://oauth2.googleapis.com/token",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "Googlw OAuth2",
-							"type": "string"
-						},
-						{
-							"key": "authUrl",
-							"value": "https://accounts.google.com/o/oauth2/auth",
-							"type": "string"
-						},
-						{
-							"key": "scope",
-							"value": "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "authorization_code",
-							"type": "string"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://oauth.pstmn.io/v1/callback",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "clientSecret",
-							"value": "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",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "809236032393-ms8jl2qt0v6uu0gakv0339ekoq5iva26.apps.googleusercontent.com",
+							"key": "token",
+							"value": "{{adminToken}}",
 							"type": "string"
 						}
 					]
 				},
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"drivingLicenseName\": \"Shubham\",\n    \"drivingLicense\": \"asdsadadsad987\",\n    \"cab\": {\n        \"registrationNumber\": \"up32jx9749\",\n        \"color\": \"marsh grey\"\n    }\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/api/v1/users/info",
 					"protocol": "http",
@@ -441,31 +332,12 @@
 		},
 		{
 			"name": "[GET] Inventory-GetAll",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{adminToken}}",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"productTreeId\": \"{{productTreeId}}\",\n    \"userId\": \"{{userId}}\",\n    \"supplierId\": \"{{supplierId}}\",\n    \"price\": 10,\n    \"quantity\": 1\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/api/v1/inventories?productTreeId={{productTreeId}}&supplierId={{supplierId}}",
 					"protocol": "http",
@@ -551,7 +423,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/carts/{{cartId}}/items",
+					"raw": "http://localhost:8080/api/v1/carts/null/items",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -561,7 +433,7 @@
 						"api",
 						"v1",
 						"carts",
-						"{{cartId}}",
+						"null",
 						"items"
 					]
 				}
@@ -578,7 +450,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"incrementBy\": \"1\",\n    \"userId\": \"{{buyerUserId}}\"\n}",
+					"raw": "{\n    \"incrementBy\": \"1\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -613,7 +485,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/carts/{{cartId}}/items",
+					"raw": "http://localhost:8080/api/v1/carts/{{cartId}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -623,8 +495,7 @@
 						"api",
 						"v1",
 						"carts",
-						"{{cartId}}",
-						"items"
+						"{{cartId}}"
 					]
 				}
 			},
@@ -666,6 +537,129 @@
 						"v1",
 						"carts",
 						"{{cartId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[GET] CartItem-AllByUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/carts/{{cartId}}/users/{{buyerUserId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"carts",
+						"{{cartId}}",
+						"users",
+						"{{buyerUserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[POST] CartItem-AddWithUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"inventoryId\": \"{{inventoryId}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/carts/{{cartId}}/items/users/{{buyerUserId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"carts",
+						"{{cartId}}",
+						"items",
+						"users",
+						"{{buyerUserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PATCH] CartItem-IncreementQuantity Copy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"incrementBy\": \"1\",\n    \"userId\": \"{{buyerUserId}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/carts/{{cartId}}/items/{{cartItemId}}/users/{{buyerUserId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"carts",
+						"{{cartId}}",
+						"items",
+						"{{cartItemId}}",
+						"users",
+						"{{buyerUserId}}"
 					]
 				}
 			},
