@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 		indexes = { @Index(name = "index_inventory_userId", columnList = "userId"),
 				@Index(name = "index_inventory__supplierId", columnList = "supplierId"),
 				@Index(name = "index_inventory_productId", columnList = "productId"), },
-		uniqueConstraints = { @UniqueConstraint(columnNames = { "productTreeId, supplierId" }) })
+		uniqueConstraints = { @UniqueConstraint(columnNames = { "productTreeId", "supplierId" }) })
 public class Inventory extends BaseAbstractAuditableEntity {
 
 	@Builder.Default

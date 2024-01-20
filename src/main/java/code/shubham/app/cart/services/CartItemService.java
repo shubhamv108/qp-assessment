@@ -49,16 +49,14 @@ public class CartItemService {
 			cart = this.cartRepository.save(Cart.builder().userId(userId).build());
 		else
 			cart = this.cartRepository.findByIdAndUserId(cartId, userId)
-				.orElseThrow(() -> new InvalidRequestException("cartId", "invalid cart id in request"));
+				.orElseThrow(() -> new InvalidRequestException("cartId", "invalid cart id: %s", cartId));
 
 		final Optional<CartItem> existingItem = this.cartItemRepository.findByCartIdAndInventoryId(cartId,
 				request.getInventoryId());
-
 		if (existingItem.isPresent())
 			return CartItemConvertor.convert(this.updateQuantity(existingItem.get(), 1));
 
 		this.inventoryService.hasQuantity(request.getInventoryId(), 1);
-
 		return CartItemConvertor.convert(this.cartItemRepository
 			.save(CartItem.builder().cartId(cart.getId()).inventoryId(request.getInventoryId()).quantity(1).build()));
 	}

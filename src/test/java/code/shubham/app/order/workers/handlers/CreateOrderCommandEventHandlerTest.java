@@ -39,6 +39,7 @@ class CreateOrderCommandEventHandlerTest extends AbstractSpringBootTest {
 		truncate("orders");
 		truncate("order_items");
 		truncate("inventories");
+		truncate("inventory_operations");
 	}
 
 	@AfterEach
@@ -46,6 +47,7 @@ class CreateOrderCommandEventHandlerTest extends AbstractSpringBootTest {
 		truncate("orders");
 		truncate("order_items");
 		truncate("inventories");
+		truncate("inventory_operations");
 	}
 
 	@Test
@@ -66,13 +68,13 @@ class CreateOrderCommandEventHandlerTest extends AbstractSpringBootTest {
 		assertEquals(1, orders.size());
 		assertEquals(1, orderProducts.size());
 		assertEquals(TestCommonConstants.USER_ID, orders.get(0).getUserId());
-		assertEquals(OrderStatus.CREATED, orders.get(0).getStatus());
+		assertEquals(OrderStatus.AWAITING_PAYMENT, orders.get(0).getStatus());
 		assertEquals(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID, orders.get(0).getClientUniqueReferenceId());
 		assertEquals(TestAppConstants.CUSTOMER_ID, orders.get(0).getCustomerId());
 		assertEquals("BUYER", orders.get(0).getCustomerType());
 		assertEquals(orders.get(0).getId(), orderProducts.get(0).getOrderId());
 		assertEquals(existingInventory.getId(), orderProducts.get(0).getInventoryId());
-		assertEquals(OrderItemStatus.CREATED.name(), orderProducts.get(0).getStatus().name());
+		assertEquals(OrderItemStatus.AWAITING_PAYMENT.name(), orderProducts.get(0).getStatus().name());
 		assertEquals(1, orderProducts.get(0).getQuantity());
 		assertEquals(UUIDUtils.uuid5(TestAppConstants.ORDER_UNIQUE_REFERENCE_ID + "_" + TestAppConstants.INVENTORY_ID),
 				orderProducts.get(0).getClientUniqueReferenceId());

@@ -30,7 +30,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, String> {
 	@Query(value = "update inventories set quantity = quantity - ? where id = ? AND quantity > 0", nativeQuery = true)
 	int incrementQuantity(int number, String id);
 
-	@Query(value = "select (quantity > ?) from inventories where id = ?", nativeQuery = true)
+	@Query(value = "select (quantity >= ?) from inventories where id = ?", nativeQuery = true)
 	int hasQuantity(int number, String id);
 
 	Optional<Inventory> findByIdAndUserId(String inventoryId, String userId);

@@ -33,8 +33,6 @@ public class OrderItemService {
 	}
 
 	public List<OrderItem> save(final String orderId, final List<OrderItemDTO> items) {
-		items.forEach(item -> this.inventoryService.incrementQuantity(item.getInventoryId(), item.getQuantity()));
-
 		final List<OrderItem> orderItems = items.stream()
 			.map(orderItem -> OrderItem.builder()
 				.orderId(orderId)
@@ -45,10 +43,12 @@ public class OrderItemService {
 				.build())
 			.collect(Collectors.toList());
 
-		log.info("[STARTED] persisting items for order id: {}", orderId);
-		final var persisted = this.repository.saveAll(orderItems);
-		log.info("[COMPLETED] persisted items for order id: {}", orderId);
-		return persisted;
+		final var persisted = this.save(orderItems, orderId);
+
+		items.forEach(item -> this.inventoryService.applyQuantityOperation(item.getInventoryId(), item.getQuantity(),
+				item.getClientReferenceId()));
+		persisted.forEach(item -> item.setStatus(OrderItemStatus.AWAITING_PAYMENT));
+		return this.save(persisted, orderId);
 	}
 
 	public OrderItem updateStatus(final OrderItemStatus completedStatus, final String uniqueReferenceId) {
@@ -65,6 +65,13 @@ public class OrderItemService {
 
 	public List<OrderItem> fetchAllByOrderId(final String orderId) {
 		return this.repository.findAllByOrderId(orderId);
+	}
+
+	private List<OrderItem> save(final Iterable<OrderItem> items, final String orderId) {
+		log.info("[STARTED] persisting items for order id: {}", orderId);
+		final var savedItems = this.repository.saveAll(items);
+		log.info("[COMPLETED] persisted items for order id: {}", orderId);
+		return savedItems;
 	}
 
 }

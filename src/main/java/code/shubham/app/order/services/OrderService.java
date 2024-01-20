@@ -63,8 +63,12 @@ public class OrderService {
 			.clientUniqueReferenceId(command.getClientReferenceId())
 			.build();
 		final Order persisted = this.save(order);
+
 		final List<OrderItem> orderItems = this.orderItemService.save(persisted.getId(), command.getItems());
-		final OrderDataDTO orderData = this.getOrderEventData(persisted, orderItems);
+		persisted.setStatus(OrderStatus.AWAITING_PAYMENT);
+		final Order updated = this.save(persisted);
+
+		final OrderDataDTO orderData = this.getOrderEventData(updated, orderItems);
 		this.publishEvent(orderData, EventName.OrderCreated);
 		return orderData;
 	}
